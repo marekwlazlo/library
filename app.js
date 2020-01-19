@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const bookRoutes = require('./api/routes/books');
 const borrowRoutes = require('./api/routes/borrows');
+const userRoutes = require('./api/routes/user');
 
 mongoose.connect('mongodb+srv://library:' + process.env.MONGO_ATLAS_PW + '@library-x83fc.mongodb.net/test?retryWrites=true&w=majority',{
     useNewUrlParser: true, 
@@ -31,6 +32,7 @@ app.use((req,res,next) =>{
 
 app.use('/books', bookRoutes);
 app.use('/borrows', borrowRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Nie znaleziono');
