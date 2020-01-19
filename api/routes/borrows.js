@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Borrow = require('../models/borrow');
 const Book = require('../models/book');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
     Borrow.find()
     .select('book quantity _id')
     .populate('book', 'name')
@@ -34,7 +35,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.get('/:borrowId', (req, res, next) => {
+router.get('/:borrowId', checkAuth, (req, res, next) => {
     Borrow.findById(req.params.borrowId)
     .populate('book')
     .exec()
@@ -59,7 +60,7 @@ router.get('/:borrowId', (req, res, next) => {
     });
 });
 
-router.delete('/:borrowId', (req, res, next) => {
+router.delete('/:borrowId', checkAuth, (req, res, next) => {
     Borrow.remove({ _id: req.params.borrowId})
     .exec()
     .then(result =>{
@@ -79,7 +80,7 @@ router.delete('/:borrowId', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     Book.findById(req.body.bookId)
     .then(book =>{
         if(!book){
